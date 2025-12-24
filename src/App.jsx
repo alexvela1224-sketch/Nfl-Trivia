@@ -4,7 +4,7 @@ import JeopardyBoard from './components/JeopardyBoard';
 import QuestionModal from './components/QuestionModal';
 import GameOverModal from './components/GameOverModal';
 import WagerModal from './components/WagerModal';
-import { triviaData as initialTrivia } from './data/triviaData';
+import { triviaData as initialTrivia, generateGameBoard } from './data/triviaData';
 import confetti from 'canvas-confetti';
 import { Trophy, Music, Volume2, VolumeX } from 'lucide-react';
 
@@ -88,12 +88,14 @@ const App = () => {
   const allQuestionsAnswered = trivia.every(cat => cat.questions.every(q => q.answered));
 
   const handleRestart = () => {
+    // Generate a completely new set of random questions
+    const newBoard = generateGameBoard();
+    setTrivia(newBoard);
     setScores({ Alex: 0, Nathan: 0 });
     setCurrentTurn('Alex');
-    setTrivia(initialTrivia.map(cat => ({
-      ...cat,
-      questions: cat.questions.map(q => ({ ...q, answered: false }))
-    })));
+    // Pick a new Daily Double
+    const randomIndex = Math.floor(Math.random() * 30);
+    setDailyDoubleId(randomIndex + 1);
     setAudioSource('jeopardy');
   };
 
