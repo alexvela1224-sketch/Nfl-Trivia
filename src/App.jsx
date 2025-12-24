@@ -3,6 +3,7 @@ import ScoreBoard from './components/ScoreBoard';
 import JeopardyBoard from './components/JeopardyBoard';
 import QuestionModal from './components/QuestionModal';
 import GameOverModal from './components/GameOverModal';
+import WagerModal from './components/WagerModal';
 import { triviaData as initialTrivia } from './data/triviaData';
 import confetti from 'canvas-confetti';
 import { Trophy, Music, Volume2, VolumeX } from 'lucide-react';
@@ -14,13 +15,25 @@ const App = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [isMuted, setIsMuted] = useState(true);
   const [audioSource, setAudioSource] = useState('jeopardy'); // 'jeopardy' or 'nfl'
+  const [dailyDoubleId, setDailyDoubleId] = useState(null);
+  const [showWagerModal, setShowWagerModal] = useState(false);
+  const [tempQuestion, setTempQuestion] = useState(null); // Holds question while wagering
 
   // Audio elements
   // Using reliable MP3 sources
   const [jeopardyAudio] = useState(new Audio('https://www.myinstants.com/media/sounds/jeopardy-theme-song.mp3'));
   const [nflAudio] = useState(new Audio('https://www.myinstants.com/media/sounds/nfl.mp3'));
+  const [dailyDoubleAudio] = useState(new Audio('https://www.myinstants.com/media/sounds/daily-double.mp3'));
+
 
   useEffect(() => {
+    // Select a random Daily Double
+    const allQuestions = initialTrivia.flatMap(cat => cat.questions);
+    const randomIndex = Math.floor(Math.random() * allQuestions.length);
+    // Find the actual ID based on index
+    // Assuming IDs are 1-30 sequential.
+    setDailyDoubleId(randomIndex + 1);
+
     jeopardyAudio.loop = true;
     nflAudio.loop = true;
     jeopardyAudio.volume = 0.5;
@@ -48,7 +61,25 @@ const App = () => {
   }, [isMuted, audioSource]);
 
   const handleQuestionSelect = (category, question) => {
-    setSelectedQuestion({ category, ...question });
+    if (question.id === dailyDoubleId) {
+      setTempQuestion({ category, ...question });
+      setShowWagerModal(true);
+      setAudioSource('none');
+      if (!isMuted) dailyDoubleAudio.play();
+    } else {
+      openQuestion({ category, ...question });
+    }
+  };
+
+  const handleWager = (wagerAmount) => {
+    setShowWagerModal(false);
+    // Update question points just for this turn
+    const wageredQuestion = { ...tempQuestion, points: wagerAmount };
+    openQuestion(wageredQuestion);
+  };
+
+  const openQuestion = (question) => {
+    setSelectedQuestion(question);
     // Switch to NFL music when a question is active for excitement
     setAudioSource('nfl');
   };
@@ -159,6 +190,15 @@ const App = () => {
           question={selectedQuestion}
           onResult={handleResult}
           onClose={() => setSelectedQuestion(null)}
+        />
+      )}
+
+      {/* Wager Modal */}
+      {showWagerModal && (
+        <WagerModal
+          currentScore={scores[currentTurn]}
+          maxWager={Math.max(scores[currentTurn], 1000)}
+          onWager={handleWager}
         />
       )}
 
