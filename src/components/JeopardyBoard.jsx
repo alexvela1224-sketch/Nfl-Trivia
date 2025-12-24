@@ -20,7 +20,7 @@ export const TriviaCard = ({ question, onSelect }) => {
 
 const JeopardyBoard = ({ trivia, onQuestionSelect }) => {
     return (
-        <div className="jeopardy-grid w-full h-full">
+        <div className="jeopardy-grid flex-1 w-full">
             {/* Render Categories Row first */}
             {trivia.map((cat, idx) => (
                 <div key={idx} className="jeopardy-card cursor-default hover:bg-[var(--jeopardy-blue)]">

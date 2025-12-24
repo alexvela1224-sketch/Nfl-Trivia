@@ -172,16 +172,12 @@ const App = () => {
         </div>
       </header>
 
-      {/* Main Game Area */}
-      <main className="flex-grow flex flex-col relative w-full h-full min-h-0 overflow-hidden bg-black">
-
-        {/* Board Container - Centered and Aspect Correct using Flex/Margin auto if possible, or simple grid full */}
-        <div className="flex-grow w-full h-full flex flex-col">
-          <JeopardyBoard
-            trivia={trivia}
-            onQuestionSelect={handleQuestionSelect}
-          />
-        </div>
+      {/* Main Game Area - fills ALL remaining space */}
+      <main className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        <JeopardyBoard
+          trivia={trivia}
+          onQuestionSelect={handleQuestionSelect}
+        />
       </main>
 
       {selectedQuestion && (
