@@ -99,36 +99,55 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 text-white relative">
-      {/* Header */}
-      <header className="w-full flex justify-between items-center p-4 bg-black border-b-4 border-black">
-        <button
-          onClick={() => setIsMuted(!isMuted)}
-          className="text-white hover:text-nfl-gold transition-colors"
-        >
-          {isMuted ? <VolumeX size={32} /> : <Volume2 size={32} />}
-        </button>
+    <div className="flex flex-col h-screen max-h-screen overflow-hidden bg-black text-white relative font-sans">
+      {/* Header Bar */}
+      <header className="flex-none flex justify-between items-center px-6 py-4 bg-[var(--jeopardy-blue)] border-b-4 border-black z-20 shadow-md">
 
-        <div className="flex flex-col items-center">
-          <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic" style={{ textShadow: '4px 4px 0px #060CE9' }}>
-            NFL Trivia Royale
-          </h1>
-          <div className="text-nfl-gold font-bold tracking-widest text-sm">JEOPARDY! EDITION</div>
+        {/* Left: Controls */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setIsMuted(!isMuted)}
+            className="text-white hover:text-[var(--jeopardy-gold)] transition-colors p-2 rounded-full hover:bg-black/20"
+            title={isMuted ? "Unmute" : "Mute"}
+          >
+            {isMuted ? <VolumeX size={28} /> : <Volume2 size={28} />}
+          </button>
+          <div className="flex flex-col">
+            <span className="text-xs uppercase tracking-widest opacity-70 font-bold">Current Turn</span>
+            <span className="text-xl font-black text-[var(--jeopardy-gold)] uppercase">{currentTurn}</span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Trophy className="text-nfl-gold" size={24} />
-          <span className="font-bold text-xl">2010 - PRESENT</span>
+        {/* Center: Title */}
+        <div className="flex flex-col items-center">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-white uppercase italic transform -skew-x-12" style={{ textShadow: '4px 4px 0px #000' }}>
+            NFL Trivia Royale
+          </h1>
+        </div>
+
+        {/* Right: Score Summary (Mini) */}
+        <div className="flex items-center gap-6">
+          <div className={`text-right ${currentTurn === 'Alex' ? 'opacity-100' : 'opacity-60'}`}>
+            <div className="text-xs font-bold uppercase">Alex</div>
+            <div className="text-xl font-black text-[var(--jeopardy-gold)]">${scores.Alex}</div>
+          </div>
+          <div className={`text-right ${currentTurn === 'Nathan' ? 'opacity-100' : 'opacity-60'}`}>
+            <div className="text-xs font-bold uppercase">Nathan</div>
+            <div className="text-xl font-black text-[var(--jeopardy-gold)]">${scores.Nathan}</div>
+          </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto">
-        <ScoreBoard scores={scores} currentTurn={currentTurn} />
+      {/* Main Game Area */}
+      <main className="flex-grow flex flex-col relative w-full h-full overflow-hidden p-4">
 
-        <JeopardyBoard
-          trivia={trivia}
-          onQuestionSelect={handleQuestionSelect}
-        />
+        {/* Board Container - Centered and Aspect Correct using Flex/Margin auto if possible, or simple grid full */}
+        <div className="flex-grow w-full max-w-7xl mx-auto h-full flex flex-col justify-center">
+          <JeopardyBoard
+            trivia={trivia}
+            onQuestionSelect={handleQuestionSelect}
+          />
+        </div>
       </main>
 
       {selectedQuestion && (
@@ -144,11 +163,6 @@ const App = () => {
       {allQuestionsAnswered && (
         <GameOverModal scores={scores} onRestart={handleRestart} />
       )}
-
-      {/* Footer Info */}
-      <footer className="mt-16 text-center text-text-secondary text-sm">
-        <p>Alex vs Nathan • NFL Jeopardy Edition</p>
-      </footer>
     </div>
   );
 };
