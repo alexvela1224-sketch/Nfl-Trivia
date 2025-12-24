@@ -46,7 +46,7 @@ export const triviaData = [
       { id: 22, points: 200, question: "What is New Orleans Saints star Alvin Kamara's nickname?", answer: "AK41", revealed: false, answered: false },
       { id: 23, points: 300, question: "Which WR is known as 'The Cheetah'?", answer: "Tyreek Hill", revealed: false, answered: false },
       { id: 24, points: 400, question: "What was Marshawn Lynch's famous nickname?", answer: "Beast Mode", revealed: false, answered: false },
-      { id: 25, points: 500, question: "The defensive line of the 2017 Eagles was often compared to this 'Wall' nickname.", answer: "The Stone Wall (or simply the DL rotation)", revealed: false, answered: false },
+      { id: 25, points: 500, question: "The 2017 Jacksonville Jaguars defense earned this nickname for their pass-rushing dominance.", answer: "Sacksonville", revealed: false, answered: false },
     ]
   },
   {
