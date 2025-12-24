@@ -100,26 +100,25 @@ const App = () => {
 
   return (
     <div className="min-h-screen p-8 text-white relative">
-      {/* Background Decor */}
-      <div className="fixed top-0 left-0 w-full h-full -z-10 opacity-30 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-nfl-gold/20 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary-blue/30 blur-[120px] rounded-full" />
-      </div>
-
       {/* Header */}
-      <header className="max-w-7xl mx-auto flex justify-between items-center mb-12">
+      <header className="w-full flex justify-between items-center p-4 bg-black border-b-4 border-black">
         <button
           onClick={() => setIsMuted(!isMuted)}
-          className="glass-panel p-3 hover:bg-white/10 transition-colors"
+          className="text-white hover:text-nfl-gold transition-colors"
         >
-          {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} className="text-nfl-gold" />}
+          {isMuted ? <VolumeX size={32} /> : <Volume2 size={32} />}
         </button>
 
-        <h1 className="nfl-title m-0">NFL Trivia Royale</h1>
+        <div className="flex flex-col items-center">
+          <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic" style={{ textShadow: '4px 4px 0px #060CE9' }}>
+            NFL Trivia Royale
+          </h1>
+          <div className="text-nfl-gold font-bold tracking-widest text-sm">JEOPARDY! EDITION</div>
+        </div>
 
-        <div className="flex items-center gap-2 glass-panel px-4 py-2 border border-nfl-gold/30">
-          <Trophy className="text-nfl-gold" size={20} />
-          <span className="font-bold">2010 - PRESENT</span>
+        <div className="flex items-center gap-2">
+          <Trophy className="text-nfl-gold" size={24} />
+          <span className="font-bold text-xl">2010 - PRESENT</span>
         </div>
       </header>
 

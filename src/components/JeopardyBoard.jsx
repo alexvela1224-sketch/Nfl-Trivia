@@ -7,36 +7,49 @@ export const TriviaCard = ({ question, onSelect }) => {
         <button
             onClick={() => !isAnswered && onSelect(question)}
             disabled={isAnswered}
-            className={`glass-panel h-24 flex items-center justify-center transition-all duration-300 ${isAnswered
-                    ? 'opacity-20 cursor-not-allowed scale-95'
-                    : 'hover:scale-105 hover:bg-[rgba(255,184,28,0.1)] hover:border-nfl-gold'
-                }`}
+            className={`jeopardy-card ${isAnswered ? 'disabled' : ''}`}
         >
-            <span className={`text-2xl font-black ${isAnswered ? 'text-text-secondary' : 'text-nfl-gold'}`}>
-                {isAnswered ? '-' : `$${question.points}`}
-            </span>
+            {!isAnswered && (
+                <span className="point-value">
+                    ${question.points}
+                </span>
+            )}
         </button>
     );
 };
 
 const JeopardyBoard = ({ trivia, onQuestionSelect }) => {
     return (
-        <div className="grid grid-cols-6 gap-4 w-full max-w-7xl mx-auto px-4">
+        <div className="jeopardy-grid w-full h-full">
+            {/* Render Categories Row first */}
             {trivia.map((cat, idx) => (
-                <div key={idx} className="flex flex-col gap-4">
-                    <div className="glass-panel p-4 h-20 flex items-center justify-center text-center border-b-2 border-nfl-gold">
-                        <h3 className="text-sm font-bold uppercase tracking-tight leading-tight">
-                            {cat.category}
-                        </h3>
-                    </div>
-                    {cat.questions.map((q) => (
-                        <TriviaCard
-                            key={q.id}
-                            question={q}
-                            onSelect={(selected) => onQuestionSelect(cat.category, selected)}
-                        />
-                    ))}
+                <div key={idx} className="jeopardy-card cursor-default hover:bg-[var(--jeopardy-blue)]">
+                    <h3 className="category-title">
+                        {cat.category}
+                    </h3>
                 </div>
+            ))}
+
+            {/* Render Questions (transposed for grid layout if needed, but simple column mapping works visually if we use CSS grid flow or mapped properly. Actually standard jeopardy mapping is column based in data but row based in visual. 
+            Let's keep the column structure but style them to fill the grid. 
+            Wait, CSS grid flow is usually row-major. 
+            Detailed fix: We need to render row by row: $200 row, $400 row, etc.
+            Data is currently organized by Category. We need to transpose it.
+            */}
+            {/* Transpose data: Row 1 ($100), Row 2 ($200)... */}
+            {[0, 1, 2, 3, 4].map((rowIndex) => (
+                <React.Fragment key={rowIndex}>
+                    {trivia.map((cat, catIndex) => {
+                        const q = cat.questions[rowIndex];
+                        return (
+                            <TriviaCard
+                                key={`${catIndex}-${rowIndex}`}
+                                question={q}
+                                onSelect={(selected) => onQuestionSelect(cat.category, selected)}
+                            />
+                        );
+                    })}
+                </React.Fragment>
             ))}
         </div>
     );
