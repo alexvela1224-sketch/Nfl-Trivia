@@ -16,12 +16,15 @@ const App = () => {
   const [audioSource, setAudioSource] = useState('jeopardy'); // 'jeopardy' or 'nfl'
 
   // Audio elements
-  const [jeopardyAudio] = useState(new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptoken=1_75c6bf21-9964-460d-838b-82155799a4c8'));
-  const [nflAudio] = useState(new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptoken=1_16e6d1c8-2e0e-4e9f-9fd5-79a639ff3f3a'));
+  // Using reliable MP3 sources
+  const [jeopardyAudio] = useState(new Audio('https://www.myinstants.com/media/sounds/jeopardy-theme-song.mp3'));
+  const [nflAudio] = useState(new Audio('https://www.myinstants.com/media/sounds/nfl.mp3'));
 
   useEffect(() => {
     jeopardyAudio.loop = true;
     nflAudio.loop = true;
+    jeopardyAudio.volume = 0.5;
+    nflAudio.volume = 0.5;
 
     return () => {
       jeopardyAudio.pause();
