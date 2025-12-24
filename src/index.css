@@ -54,8 +54,8 @@ body {
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: auto repeat(5, 1fr);
   /* Header row auto, 5 question rows equal fraction */
-  gap: 0.5rem;
-  padding: 0.5rem;
+  gap: 0.25rem;
+  padding: 0.25rem;
   background: black;
   width: 100%;
   height: 100%;
